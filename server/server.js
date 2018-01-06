@@ -13,16 +13,15 @@ const publicPath = path.join(__dirname, '../public')
 app.use(express.static(publicPath))
 
 io.on('connection', socket => {
-	console.log('new user connected', socket)
-	
-	socket.emit('newMessage', {
-		from: 'John',
-		text: 'hey, whats up',
-		createdAt: 123
-	})
+	console.log('New user connected')
 
 	socket.on('createMessage', (message) => {
 		console.log('createMessage', message)
+		io.emit('newMessage', {
+			from: message.from,
+			text: message.text,
+			createdAt: new Date().getTime()
+		})
 	})
 
 	socket.on('createEmail', (newEmail) => {
